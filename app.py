@@ -91,11 +91,11 @@ def weight():
 
     weight = request.form.get('weight')
     if not can_be_float(weight):
-        return 400
+        return 'weight is the wrong type', 400
 
     timestamp = request.form.get('timestamp')
     if not can_be_float(timestamp):
-        return 400
+        return 'timestamp was wrong type', 400
     
     get_container().upsert_item(
         {
@@ -106,7 +106,7 @@ def weight():
         }
     )
 
-    return 200
+    return 'successfully created new entry', 200
 
 
 @app.route('/favicon.ico')
