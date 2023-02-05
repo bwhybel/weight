@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <h1 style="text-align: center;">{{ title }}</h1>
+    <h4 style="text-align: center;"><a href="{{ url_for('index') }}">Home</h4>
+    <div style="height: 80vh;width: 80vw; margin: auto">
+      <canvas id="chart"></canvas>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.0/chart.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script>
+      new Chart(
+	  document.getElementById("chart"),
+	  {
+	      type: "line",
+	      data: {
+		  labels: [
+		      {% for time_string in times %}
+		      Date.parse("{{ time_string }}"),
+		      {% endfor %}
+		  ],
+		  datasets: [
+		      {
+			  label: 'Weight (lbs)',
+			  data: [
+			      {% for weight in weights %}
+			      {{ weight }},
+			      {% endfor %}
+			  ],
+		      }
+		  ]
+	      },
+	      options: {
+		  scales: {
+		      x: {
+			  type: 'time',
+			  time: {
+			      unit: 'day'
+			  }
+		      },
+		      y: {
+			  max: {{ maximum }},
+			  min: {{ minimum }}
+		      }
+		  },
+		  plugins: {
+		      legend: {
+			  display: false
+		      }
+		  }
+	      }
+	  }
+      );
+    </script>
+  </body>
+</html>
