@@ -85,6 +85,28 @@ def weights(username):
     )
 
 
+@app.route('/weights/raw/<username>', methods=['GET'])
+def raw_weights(username):
+    user_data = list(
+        get_container().query_items(
+            query='SELECT w.weight, w.timestamp FROM weights w WHERE w.username = \'{}\''.format(username),
+            enable_cross_partition_query=True
+        )
+    )
+
+    values = [
+        user.get("weight") for user in user_data
+    ]
+
+    timestamps = [
+        user.get("timestamp") for user in user_data
+    ]
+
+    result = {timestamps[i]: values[i] for i in range(len(timestamps))}
+
+    return jsonify(result)
+
+
 @app.route('/weight', methods=['POST'])
 def weight():
     user = request.form.get('username')
