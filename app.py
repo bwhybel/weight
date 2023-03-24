@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory, g
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, g, jsonify
 from azure.cosmos import CosmosClient
 import datetime
 import time
